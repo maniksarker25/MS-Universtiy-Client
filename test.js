@@ -26,21 +26,44 @@ export const adminPaths2 = [
   },
 ];
 
+//! menuplate path for routes
+
+// const newArray = adminPaths2.reduce((acc, item) => {
+//   if (item.path && item.element) {
+//     acc.push({
+//       path: item.path,
+//       element: item.element,
+//     });
+//   }
+//   if (item.children) {
+//     item.children.forEach((child) => {
+//       acc.push({
+//         path: child.path,
+//         element: child.element,
+//       });
+//     });
+//   }
+//   return acc;
+// }, []);
+
+//! manuplate path for layout path -----------
 const newArray = adminPaths2.reduce((acc, item) => {
-  if (item.path && item.element) {
+  if (item.name && item.path) {
     acc.push({
-      path: item.path,
-      element: item.element,
+      key: item.name,
+      label: `<NavLink to=${item.path}></NavLink>`,
     });
   }
   if (item.children) {
-    item.children.forEach((child) => {
-      acc.push({
-        path: child.path,
-        element: child.element,
-      });
+    acc.push({
+      key: item.name,
+      label: item.name,
+      children: item.children.map((child) => ({
+        key: child.name,
+        label: `<NavLink to=${child.path}></NavLink>`,
+      })),
     });
   }
   return acc;
 }, []);
-console.log(newArray);
+console.log(JSON.stringify(newArray));
