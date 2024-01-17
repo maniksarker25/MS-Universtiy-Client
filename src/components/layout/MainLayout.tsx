@@ -1,6 +1,8 @@
 import { Layout, Menu } from "antd";
 import { Outlet } from "react-router-dom";
-import { adminSidebarItems } from "../../routes/admin.routes";
+import { adminPaths } from "../../routes/admin.routes";
+import { sidebarItemsGenerator } from "../../utils/sidebarItemsGenerator";
+import Sidebar from "./Sidebar";
 
 const { Header, Content, Footer, Sider } = Layout;
 //! hard coded way--------------
@@ -31,7 +33,7 @@ const { Header, Content, Footer, Sider } = Layout;
 const MainLayout = () => {
   return (
     <Layout style={{ height: "100vh" }}>
-      <Sider
+      {/* <Sider
         breakpoint="lg"
         collapsedWidth="0"
         onBreakpoint={(broken) => {
@@ -58,9 +60,12 @@ const MainLayout = () => {
           mode="inline"
           defaultSelectedKeys={["4"]}
           // admin sidebar items come from admin.routes.tsx
-          items={adminSidebarItems}
+          // items={adminSidebarItems}
+          //* now it's make a utils function
+          items={sidebarItemsGenerator(adminPaths, "admin")}
         />
-      </Sider>
+      </Sider> */}
+      <Sidebar />
       <Layout>
         <Header style={{ padding: 0 }} />
         <Content style={{ margin: "24px 16px 0" }}>
@@ -73,9 +78,9 @@ const MainLayout = () => {
             <Outlet />
           </div>
         </Content>
-        <Footer style={{ textAlign: "center" }}>
+        {/* <Footer style={{ textAlign: "center" }}>
           Ant Design ©{new Date().getFullYear()} Created by Ant UED
-        </Footer>
+        </Footer> */}
       </Layout>
     </Layout>
   );
