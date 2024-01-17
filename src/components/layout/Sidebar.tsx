@@ -1,10 +1,33 @@
 import { Menu } from "antd";
 import Sider from "antd/es/layout/Sider";
-import React from "react";
 import { sidebarItemsGenerator } from "../../utils/sidebarItemsGenerator";
 import { adminPaths } from "../../routes/admin.routes";
+import { facultyPaths } from "../../routes/faculty.routes";
+import { studentPaths } from "../../routes/student.routes";
 
+//
+export const USER_ROLE = {
+  ADMIN: "admin",
+  FACULTY: "faculty",
+  STUDENT: "student",
+};
 const Sidebar = () => {
+  const role = USER_ROLE.FACULTY;
+  let sidebarItems;
+  switch (role) {
+    case USER_ROLE.ADMIN:
+      sidebarItems = sidebarItemsGenerator(adminPaths, USER_ROLE.ADMIN);
+      break;
+    case USER_ROLE.FACULTY:
+      sidebarItems = sidebarItemsGenerator(facultyPaths, USER_ROLE.FACULTY);
+      break;
+    case USER_ROLE.STUDENT:
+      sidebarItems = sidebarItemsGenerator(studentPaths, USER_ROLE.STUDENT);
+      break;
+
+    default:
+      break;
+  }
   return (
     <Sider
       breakpoint="lg"
@@ -35,7 +58,7 @@ const Sidebar = () => {
         // admin sidebar items come from admin.routes.tsx
         // items={adminSidebarItems}
         //* now it's make a utils function
-        items={sidebarItemsGenerator(adminPaths, "admin")}
+        items={sidebarItems}
       />
     </Sider>
   );
