@@ -11,6 +11,7 @@ import { academicSemesterSchema } from "../../../schemas/academicManagement.sche
 import { useCreateAcademicSemesterMutation } from "../../../redux/features/admin/academicManagement.api";
 import { toast } from "sonner";
 import { TApiResponse } from "../../../types/global.type";
+import { TAcademicSemester } from "../../../types/academicManagement.type";
 
 const currentYear = new Date().getFullYear();
 const yearOptions = [0, 1, 2, 3, 4].map((number) => ({
@@ -33,7 +34,9 @@ const CreateAcademicSemester = () => {
     };
     // console.log(semesterData);
     try {
-      const res = (await createAcademicSemester(semesterData)) as TApiResponse;
+      const res = (await createAcademicSemester(
+        semesterData
+      )) as TApiResponse<TAcademicSemester>;
       if (res.error) {
         toast.error(res.error.data.message, { id: toastId });
       } else {
