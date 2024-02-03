@@ -51,7 +51,12 @@ const columns: TableColumnsType<TTableData> = [
 ];
 
 const AcademicSemester = () => {
-  const { data: semesterData } = useGetAllSemestersQuery(undefined);
+  const { data: semesterData } = useGetAllSemestersQuery([
+    {
+      name: "year",
+      value: "2025",
+    },
+  ]);
   console.log(semesterData);
   const tableData = semesterData?.data?.map(
     ({ _id, name, startMonth, endMonth, year }) => ({
