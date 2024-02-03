@@ -37,7 +37,7 @@ const MainLayout = () => {
     dispatch(logout());
   };
   return (
-    <Layout style={{ height: "100vh" }}>
+    <Layout style={{ height: "100%", minHeight: "100vh" }}>
       {/* <Sider
         breakpoint="lg"
         collapsedWidth="0"
