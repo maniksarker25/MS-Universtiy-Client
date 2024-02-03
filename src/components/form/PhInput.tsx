@@ -1,19 +1,58 @@
+// import { Input } from "antd";
+// import { Controller } from "react-hook-form";
+
+// type TInputProps = {
+//   type: string;
+//   name: string;
+//   label?: string;
+// };
+// const PhInput = ({ type, name, label }: TInputProps) => {
+//   //   const { register } = useFormContext();
+
+//   return (
+//     <div style={{ marginBottom: "15px" }}>
+//       {label ? <p style={{ marginBottom: "5px" }}>{label}</p> : null}
+//       <Controller
+//         name={name}
+//         render={({ field }) => <Input {...field} type={type} id={name} />}
+//       />
+//     </div>
+//   );
+// };
+
+// export default PhInput;
 import { Input } from "antd";
-import { Controller } from "react-hook-form";
+import { Controller, useFormContext } from "react-hook-form";
 
 type TInputProps = {
   type: string;
   name: string;
   label?: string;
 };
+
 const PhInput = ({ type, name, label }: TInputProps) => {
-  //   const { register } = useFormContext();
+  const {
+    control,
+    formState: { errors },
+  } = useFormContext();
+
   return (
     <div style={{ marginBottom: "15px" }}>
       {label ? <p style={{ marginBottom: "5px" }}>{label}</p> : null}
       <Controller
         name={name}
-        render={({ field }) => <Input {...field} type={type} id={name} />}
+        control={control}
+        rules={{ required: `Please enter ${label || name}` }}
+        render={({ field }) => (
+          <div>
+            <Input {...field} type={type} id={name} />
+            {errors[name] && (
+              <p style={{ color: "red" }}>
+                {(errors[name]?.message as string) || "This field is required"}
+              </p>
+            )}
+          </div>
+        )}
       />
     </div>
   );
