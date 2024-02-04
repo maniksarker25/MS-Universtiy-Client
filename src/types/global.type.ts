@@ -27,3 +27,8 @@ export type TApiResponse<T> = {
 };
 
 export type TReduxResponse<T> = TApiResponse<T> & BaseQueryApi;
+
+export type TQueryParams = {
+  name: string;
+  value: boolean | React.Key;
+};
