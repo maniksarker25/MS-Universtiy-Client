@@ -8,7 +8,9 @@ import CreateAcademicFaculty from "../pages/admin/academicManagement/CreateAcade
 import CreateAcademicSemester from "../pages/admin/academicManagement/CreateAcademicSemester";
 import CreateAdmin from "../pages/admin/userManagement/CreateAdmin";
 import CreateFaculty from "../pages/admin/userManagement/CreateFaculty";
-import CreateStudent from "../pages/admin/userManagement/CreateStudent";
+import CreateStudent from "../pages/admin/userManagement/student/CreateStudent";
+import StudentData from "../pages/admin/userManagement/student/StudentData";
+import StudentDetails from "../pages/admin/userManagement/student/StudentDetails";
 
 // type TRoute = {
 //   path: string;
@@ -64,6 +66,20 @@ export const adminPaths = [
     name: "User Management",
     children: [
       {
+        name: "Create Student",
+        path: "create-student",
+        element: <CreateStudent />,
+      },
+      {
+        name: "Students",
+        path: "student-data",
+        element: <StudentData />,
+      },
+      {
+        path: "student-data/:studentId",
+        element: <StudentDetails />,
+      },
+      {
         name: "Create Admin",
         path: "create-admin",
         element: <CreateAdmin />,
@@ -72,11 +88,6 @@ export const adminPaths = [
         name: "Create Faculty",
         path: "create-faculty",
         element: <CreateFaculty />,
-      },
-      {
-        name: "Create Student",
-        path: "create-student",
-        element: <CreateStudent />,
       },
     ],
   },
