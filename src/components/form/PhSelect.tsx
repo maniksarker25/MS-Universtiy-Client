@@ -3,9 +3,10 @@ import { Controller } from "react-hook-form";
 export type TSelectProps = {
   label: string;
   name: string;
-  options: { label: string; value: string; disabled?: boolean }[];
+  options: { label: string; value: string; disabled?: boolean }[] | undefined;
+  disabled?: boolean;
 };
-const PhSelect = ({ label, name, options }: TSelectProps) => {
+const PhSelect = ({ label, name, options, disabled }: TSelectProps) => {
   return (
     <div>
       <Controller
