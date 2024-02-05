@@ -1,7 +1,7 @@
-import { FieldValues, SubmitHandler } from "react-hook-form";
+import { Controller, FieldValues, SubmitHandler } from "react-hook-form";
 import PhForm from "../../../components/form/PhForm";
 import PhInput from "../../../components/form/PhInput";
-import { Button, Col, Divider, Row } from "antd";
+import { Button, Col, Divider, Form, Input, Row } from "antd";
 import PhSelect from "../../../components/form/PhSelect";
 import {
   bloodGroupOptions,
@@ -106,10 +106,11 @@ const CreateStudent = () => {
     };
     const formData = new FormData();
     formData.append("data", JSON.stringify(studentData));
+    formData.append("file", data.profileImage);
     createStudent(formData);
     //! This is for development
     //! Only for checking
-    console.log(Object.fromEntries(formData));
+    // console.log(Object.fromEntries(formData));
   };
   return (
     <Row justify="center">
@@ -137,6 +138,21 @@ const CreateStudent = () => {
                 name="bloodGroup"
                 label="Blood Group"
                 options={bloodGroupOptions}
+              />
+            </Col>
+            <Col span={24} md={{ span: 12 }} xl={{ span: 8 }}>
+              <Controller
+                name="profileImage"
+                render={({ field: { onChange, value, ...field } }) => (
+                  <Form.Item label="Profile Image">
+                    <Input
+                      type="file"
+                      value={value?.fileName}
+                      {...field}
+                      onChange={(e) => onChange(e.target.files?.[0])}
+                    />
+                  </Form.Item>
+                )}
               />
             </Col>
             <Divider>Contact Information</Divider>
