@@ -39,7 +39,7 @@ export type TStudent = {
   _id: string;
   id: string;
   user: TUser;
-  name: string;
+  name: TUserName;
   gender: "male" | "female" | "other";
   dateOfBirth?: Date;
   email: string;
@@ -55,5 +55,25 @@ export type TStudent = {
   academicFaculty: TAcademicFaculty;
   profileImage?: string;
   isDeleted: boolean;
+  fullName: string;
+};
+
+export type TFaculty = {
+  id: string;
+  user: TUser;
+  designation: string;
+  name: TUserName;
+  gender: "male" | "female" | "other";
+  dateOfBirth?: Date;
+  email: string;
+  contactNo: string;
+  emergencyContactNo: string;
+  bloodGroup?: "A+" | "A-" | "B+" | "B-" | "AB+" | "AB-" | "O+" | "O-";
+  presentAddress: string;
+  permanentAddress: string;
+  profileImg?: string;
+  academicDepartment: TAcademicDepartment;
+  isDeleted: boolean;
+  _id: string;
   fullName: string;
 };

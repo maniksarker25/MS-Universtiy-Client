@@ -8,60 +8,40 @@ import {
   genderOptions,
 } from "../../../../constant/userManagement";
 import PhDatePicker from "../../../../components/form/PhDatePicker";
-import {
-  useGetAllAcademicDepartmentQuery,
-  useGetAllSemestersQuery,
-} from "../../../../redux/features/admin/academicManagement.api";
-import { useCreateStudentMutation } from "../../../../redux/features/admin/userManagement.api";
+import { useGetAllAcademicDepartmentQuery } from "../../../../redux/features/admin/academicManagement.api";
+import { useCreateFacultyMutation } from "../../../../redux/features/admin/userManagement.api";
+
 import { toast } from "sonner";
 import { TApiResponse } from "../../../../types";
-import { TStudent } from "../../../../types/userManagement.type";
+import { TFaculty } from "../../../../types/userManagement.type";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { studentSchema } from "../../../../schemas/userManagementSchema/studentManagement.schema";
+import { createFacultyValidationSchema } from "../../../../schemas/userManagementSchema/facultyManagement.schema";
 
 //! this is only for development
 //! should be removed in a future release
-// const studentDefaultValues = {
+// const facultyDefaultValues = {
 //   name: {
-//     firstName: "Manik",
+//     firstName: "Anik",
 //     middleName: "Chandra",
-//     lastName: "Sarker",
+//     lastName: "Biswas",
 //   },
 //   gender: "male",
-//   // dateOfBirth: "1995-08-15T00:00:00.000Z",
-//   email: "student47557@example.com",
+//   designation: "professor",
+//   // dateOfBirth: "1980-05-15T00:00:00.000Z",
+//   email: "anik@example.com",
 //   contactNo: "1234567890",
 //   emergencyContactNo: "9876543210",
-//   bloodGroup: "A+",
+//   bloodGroup: "O+",
 //   presentAddress: "123 Main Street, City",
-//   permanentAddress: "456 Oak Avenue, Town",
-//   guardian: {
-//     fatherName: "Michael Doe",
-//     fatherOccupation: "Engineer",
-//     fatherContactNo: "555-1234",
-//     motherName: "Anna Doe",
-//     motherOccupation: "Doctor",
-//     motherContactNo: "555-5678",
-//   },
-//   localGuardian: {
-//     name: "Susan Johnson",
-//     occupation: "Teacher",
-//     contactNo: "555-9876",
-//     address: "789 Pine Road, Village",
-//   },
-//   admissionSemester: "65ba20a627bef55221364229",
+//   permanentAddress: "456 Park Avenue, Town",
+//   profileImg: "https://example.com/profile.jpg",
 //   academicDepartment: "65ba1aa18a05588ffc6dfb22",
 //   isDeleted: false,
 // };
-const CreateStudent = () => {
-  const [createStudent, { data, error }] = useCreateStudentMutation();
+const CreateFaculty = () => {
+  const [createFaculty, { data, error }] = useCreateFacultyMutation();
   console.log({ data, error });
-  const { data: academicSemesterData, isLoading: isAcademicSemesterLoading } =
-    useGetAllSemestersQuery(undefined);
-  const admissionSemesterOptions = academicSemesterData?.data?.map((item) => ({
-    label: `${item.name} - ${item.year}`,
-    value: item._id,
-  }));
+
   const { data: departmentData, isLoading: isDepartmentLoading } =
     useGetAllAcademicDepartmentQuery(undefined);
   const academicDepartmentOptions = departmentData?.data?.map((item) => ({
@@ -69,21 +49,22 @@ const CreateStudent = () => {
     value: item._id,
   }));
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
-    // console.log(data);
+    console.log("Ldkdjf");
+    console.log(data);
     const toastId = toast.loading("Creating...");
-    const studentData = {
-      password: "student123",
-      student: data,
+    const facultyData = {
+      password: "faculty123",
+      faculty: data,
     };
     const formData = new FormData();
-    formData.append("data", JSON.stringify(studentData));
+    formData.append("data", JSON.stringify(facultyData));
     formData.append("file", data.profileImage);
     try {
-      const res = (await createStudent(formData)) as TApiResponse<TStudent>;
+      const res = (await createFaculty(formData)) as TApiResponse<TFaculty>;
       if (res.error) {
         toast.error(res.error.data.message, { id: toastId });
       } else {
-        toast.success("Semester created successfully", { id: toastId });
+        toast.success("Faculty created successfully", { id: toastId });
       }
     } catch (error) {
       toast.error("Something went wrong", { id: toastId });
@@ -95,7 +76,11 @@ const CreateStudent = () => {
   return (
     <Row justify="center">
       <Col span={24}>
-        <PhForm onSubmit={onSubmit} resolver={zodResolver(studentSchema)}>
+        <PhForm
+          onSubmit={onSubmit}
+          // defaultValues={facultyDefaultValues}
+          resolver={zodResolver(createFacultyValidationSchema)}
+        >
           <Divider>Personal Information</Divider>
           <Row gutter={8}>
             <Col span={24} md={{ span: 12 }} xl={{ span: 8 }}>
@@ -163,83 +148,11 @@ const CreateStudent = () => {
                 label="Permanent Address"
               />
             </Col>
-            <Divider>Guardian Info</Divider>
-            <Col span={24} md={{ span: 12 }} xl={{ span: 8 }}>
-              <PhInput
-                type="text"
-                name="guardian.fatherName"
-                label="Father Name"
-              />
-            </Col>
-            <Col span={24} md={{ span: 12 }} xl={{ span: 8 }}>
-              <PhInput
-                type="text"
-                name="guardian.fatherOccupation"
-                label="Father Occupation"
-              />
-            </Col>
-            <Col span={24} md={{ span: 12 }} xl={{ span: 8 }}>
-              <PhInput
-                type="text"
-                name="guardian.fatherContactNo"
-                label="Father Contact No"
-              />
-            </Col>
-            <Col span={24} md={{ span: 12 }} xl={{ span: 8 }}>
-              <PhInput
-                type="text"
-                name="guardian.motherName"
-                label="Mother Name"
-              />
-            </Col>
-            <Col span={24} md={{ span: 12 }} xl={{ span: 8 }}>
-              <PhInput
-                type="text"
-                name="guardian.motherOccupation"
-                label="Mother Occupation"
-              />
-            </Col>
-            <Col span={24} md={{ span: 12 }} xl={{ span: 8 }}>
-              <PhInput
-                type="text"
-                name="guardian.motherContactNo"
-                label="Mother Contact No"
-              />
-            </Col>
-            <Divider>Local Guardian Info</Divider>
-            <Col span={24} md={{ span: 12 }} xl={{ span: 8 }}>
-              <PhInput type="text" name="localGuardian.name" label="Name" />
-            </Col>
-            <Col span={24} md={{ span: 12 }} xl={{ span: 8 }}>
-              <PhInput
-                type="text"
-                name="localGuardian.occupation"
-                label="Occupation"
-              />
-            </Col>
-            <Col span={24} md={{ span: 12 }} xl={{ span: 8 }}>
-              <PhInput
-                type="text"
-                name="localGuardian.contactNo"
-                label="Contact No"
-              />
-            </Col>
-            <Col span={24} md={{ span: 12 }} xl={{ span: 8 }}>
-              <PhInput
-                type="text"
-                name="localGuardian.address"
-                label="Address"
-              />
-            </Col>
+
             <Divider>Academic Information</Divider>
 
             <Col span={24} md={{ span: 12 }}>
-              <PhSelect
-                name="admissionSemester"
-                label="Admission Semester"
-                disabled={isAcademicSemesterLoading}
-                options={admissionSemesterOptions!}
-              />
+              <PhInput type="text" name="designation" label="Designation" />
             </Col>
             <Col span={24} md={{ span: 12 }}>
               <PhSelect
@@ -257,4 +170,4 @@ const CreateStudent = () => {
   );
 };
 
-export default CreateStudent;
+export default CreateFaculty;
