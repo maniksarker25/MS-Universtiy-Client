@@ -6,7 +6,9 @@ import AcademicSemester from "../pages/admin/academicManagement/AcademicSemester
 import CreateAcademicDepartment from "../pages/admin/academicManagement/CreateAcademicDepartment";
 import CreateAcademicFaculty from "../pages/admin/academicManagement/CreateAcademicFaculty";
 import CreateAcademicSemester from "../pages/admin/academicManagement/CreateAcademicSemester";
-import CreateAdmin from "../pages/admin/userManagement/CreateAdmin";
+import Admins from "../pages/admin/userManagement/adminManagement/Admins";
+import CreateAdmin from "../pages/admin/userManagement/adminManagement/CreateAdmin";
+
 import CreateFaculty from "../pages/admin/userManagement/facultyManagement/CreateFaculty";
 import Faculties from "../pages/admin/userManagement/facultyManagement/Faculties";
 import CreateStudent from "../pages/admin/userManagement/student/CreateStudent";
@@ -94,6 +96,11 @@ export const adminPaths = [
         name: "Create Admin",
         path: "create-admin",
         element: <CreateAdmin />,
+      },
+      {
+        name: "Admins",
+        path: "admin-data",
+        element: <Admins />,
       },
     ],
   },

@@ -8,62 +8,56 @@ import {
   genderOptions,
 } from "../../../../constant/userManagement";
 import PhDatePicker from "../../../../components/form/PhDatePicker";
-import { useGetAllAcademicDepartmentQuery } from "../../../../redux/features/admin/academicManagement.api";
-import { useCreateFacultyMutation } from "../../../../redux/features/admin/userManagement.api";
+
+import { useCreateAdminMutation } from "../../../../redux/features/admin/userManagement.api";
 
 import { toast } from "sonner";
 import { TApiResponse } from "../../../../types";
-import { TFaculty } from "../../../../types/userManagement.type";
+import { TAdmin } from "../../../../types/userManagement.type";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { createFacultyValidationSchema } from "../../../../schemas/userManagementSchema/facultyManagement.schema";
+import { createAdminValidationSchema } from "../../../../schemas/userManagementSchema/AdminManagement.schema";
 
 //! this is only for development
 //! should be removed in a future release
-// const facultyDefaultValues = {
-//   name: {
-//     firstName: "Anik",
-//     middleName: "Chandra",
-//     lastName: "Biswas",
-//   },
-//   gender: "male",
-//   designation: "professor",
-//   // dateOfBirth: "1980-05-15T00:00:00.000Z",
-//   email: "anik@example.com",
-//   contactNo: "1234567890",
-//   emergencyContactNo: "9876543210",
-//   bloodGroup: "O+",
-//   presentAddress: "123 Main Street, City",
-//   permanentAddress: "456 Park Avenue, Town",
-//   profileImg: "https://example.com/profile.jpg",
-//   academicDepartment: "65ba1aa18a05588ffc6dfb22",
-//   isDeleted: false,
-// };
-const CreateFaculty = () => {
-  const [createFaculty, { data, error }] = useCreateFacultyMutation();
+const adminDefaultValues = {
+  designation: "Administrator",
+  name: {
+    firstName: "Manik",
+    middleName: "Chandra",
+    lastName: "Saker",
+  },
+  gender: "male",
+  // dateOfBirth: "1985-08-20T00:00:00.000Z",
+  email: "maniksarker265@gmail.com",
+  contactNo: "9876543210",
+  emergencyContactNo: "1234567890",
+  bloodGroup: "AB+",
+  presentAddress: "789 Elm Street, City",
+  permanentAddress: "567 Oak Avenue, Town",
+  profileImg: "https://example.com/emily_profile.jpg",
+  isDeleted: false,
+};
+
+const CreateAdmin = () => {
+  const [createAdmin, { data, error }] = useCreateAdminMutation();
   console.log({ data, error });
 
-  const { data: departmentData, isLoading: isDepartmentLoading } =
-    useGetAllAcademicDepartmentQuery(undefined);
-  const academicDepartmentOptions = departmentData?.data?.map((item) => ({
-    label: item.name,
-    value: item._id,
-  }));
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
-    // console.log(data);
+    console.log(data);
     const toastId = toast.loading("Creating...");
     const facultyData = {
       password: "faculty123",
-      faculty: data,
+      admin: data,
     };
     const formData = new FormData();
     formData.append("data", JSON.stringify(facultyData));
     formData.append("file", data.profileImage);
     try {
-      const res = (await createFaculty(formData)) as TApiResponse<TFaculty>;
+      const res = (await createAdmin(formData)) as TApiResponse<TAdmin>;
       if (res.error) {
         toast.error(res.error.data.message, { id: toastId });
       } else {
-        toast.success("Faculty created successfully", { id: toastId });
+        toast.success("Admin created successfully", { id: toastId });
       }
     } catch (error) {
       toast.error("Something went wrong", { id: toastId });
@@ -77,8 +71,8 @@ const CreateFaculty = () => {
       <Col span={24}>
         <PhForm
           onSubmit={onSubmit}
-          // defaultValues={facultyDefaultValues}
-          resolver={zodResolver(createFacultyValidationSchema)}
+          defaultValues={adminDefaultValues}
+          resolver={zodResolver(createAdminValidationSchema)}
         >
           <Divider>Personal Information</Divider>
           <Row gutter={8}>
@@ -147,19 +141,10 @@ const CreateFaculty = () => {
                 label="Permanent Address"
               />
             </Col>
-
             <Divider>Academic Information</Divider>
 
             <Col span={24} md={{ span: 12 }}>
               <PhInput type="text" name="designation" label="Designation" />
-            </Col>
-            <Col span={24} md={{ span: 12 }}>
-              <PhSelect
-                name="academicDepartment"
-                label="Academic Department"
-                options={academicDepartmentOptions}
-                disabled={isDepartmentLoading}
-              />
             </Col>
           </Row>
           <Button htmlType="submit">Submit</Button>
@@ -169,4 +154,4 @@ const CreateFaculty = () => {
   );
 };
 
-export default CreateFaculty;
+export default CreateAdmin;
