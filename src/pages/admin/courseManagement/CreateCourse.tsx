@@ -3,16 +3,12 @@ import PhForm from "../../../components/form/PhForm";
 
 import { Button, Col, Flex } from "antd";
 import PhSelect from "../../../components/form/PhSelect";
-import { semesterStatusOptions } from "../../../constant/semester";
 
 import { toast } from "sonner";
 
-import { useGetAllSemestersQuery } from "../../../redux/features/admin/academicManagement.api";
-import PhDatePicker from "../../../components/form/PhDatePicker";
 import PhInput from "../../../components/form/PhInput";
 import {
   useCreateCourseMutation,
-  useCreateRegisterSemesterMutation,
   useGetAllCoursesQuery,
 } from "../../../redux/features/admin/courseManagement.api";
 import { TApiResponse } from "../../../types";
@@ -21,7 +17,7 @@ const CreateCourse = () => {
   const { data: courses } = useGetAllCoursesQuery(undefined);
   const [createCourse] = useCreateCourseMutation();
   // console.log(courses);
-  const preRequisiteCourseOptions = courses?.data?.map((item) => ({
+  const preRequisiteCourseOptions = courses?.data?.map((item: any) => ({
     label: item.title,
     value: item._id,
   }));
