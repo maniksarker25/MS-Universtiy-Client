@@ -10,6 +10,7 @@ const courseManagementApi = baseApi.injectEndpoints({
         method: "POST",
         body: data,
       }),
+      invalidatesTags: ["registeredSemester"],
     }),
     getAllRegisteredSemester: builder.query({
       query: () => {
@@ -24,16 +25,18 @@ const courseManagementApi = baseApi.injectEndpoints({
           meta: response.meta,
         };
       },
+      providesTags: ["registeredSemester"],
     }),
-    // createAcademicFaculty: builder.mutation({
-    //   query: (data) => {
-    //     return {
-    //       url: "/academic-faculties/create-academic-faculty",
-    //       method: "POST",
-    //       body: data,
-    //     };
-    //   },
-    // }),
+    updateRegisteredSemester: builder.mutation({
+      query: (args) => {
+        return {
+          url: `/semester-registrations/${args.id}`,
+          method: "PATCH",
+          body: args.data,
+        };
+      },
+      invalidatesTags: ["registeredSemester"],
+    }),
     // createAcademicDepartment: builder.mutation({
     //   query: (data) => {
     //     return {
@@ -63,4 +66,5 @@ const courseManagementApi = baseApi.injectEndpoints({
 export const {
   useCreateRegisterSemesterMutation,
   useGetAllRegisteredSemesterQuery,
+  useUpdateRegisteredSemesterMutation,
 } = courseManagementApi;
