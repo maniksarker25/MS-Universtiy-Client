@@ -1,11 +1,16 @@
 import { Button, Modal, Table, TableColumnsType } from "antd";
 
-import { useGetAllCoursesQuery } from "../../../redux/features/admin/courseManagement.api";
+import {
+  useAssignFacultyMutation,
+  useGetAllCoursesQuery,
+} from "../../../redux/features/admin/courseManagement.api";
 import { TCourse } from "../../../types/courseManagement.type";
 import { useState } from "react";
 import PhForm from "../../../components/form/PhForm";
 import PhSelect from "../../../components/form/PhSelect";
 import { useGetAllFacultyQuery } from "../../../redux/features/admin/userManagement.api";
+import { TApiResponse } from "../../../types";
+import { toast } from "sonner";
 
 // import { TQueryParams } from "../../../types";
 // import { useState } from "react";
@@ -40,7 +45,7 @@ const Courses = () => {
       title: "Action",
       key: "x",
       render: (item) => {
-        return <AssignFacultyModal data={item} />;
+        return <AssignFacultyModal facultyInfo={item} />;
       },
     },
   ];
@@ -75,9 +80,11 @@ const Courses = () => {
   );
 };
 
-const AssignFacultyModal = ({ data }) => {
+const AssignFacultyModal = ({ facultyInfo }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [assignFaculties] = useAssignFacultyMutation();
   const { data: faculties } = useGetAllFacultyQuery(undefined);
+
   // console.log(faculties);
   const facultyOptions = faculties?.data?.map((item: any) => ({
     label: item?.fullName,
@@ -88,15 +95,27 @@ const AssignFacultyModal = ({ data }) => {
     setIsModalOpen(true);
   };
 
-  const handleOk = () => {
-    setIsModalOpen(false);
-  };
   const handleCancel = () => {
     setIsModalOpen(false);
   };
   //
-  const handleSubmit = (data) => {
-    console.log(data);
+  const handleSubmit = async (data) => {
+    const toastId = toast.loading("Assigning...");
+    const facultyData = {
+      courseId: facultyInfo.key,
+      data: data,
+    };
+    try {
+      const res = (await assignFaculties(facultyData)) as TApiResponse<any>;
+      if (res.error) {
+        toast.error(res.error.data.message, { id: toastId });
+      } else {
+        toast.success("Faculties assigned successfully", { id: toastId });
+        handleCancel();
+      }
+    } catch (error) {
+      toast.error("Something went wrong", { id: toastId });
+    }
   };
   return (
     <>
@@ -104,8 +123,8 @@ const AssignFacultyModal = ({ data }) => {
       <Modal
         title="Basic Modal"
         open={isModalOpen}
-        onOk={handleOk}
         onCancel={handleCancel}
+        footer={null}
       >
         <PhForm onSubmit={handleSubmit}>
           <PhSelect
