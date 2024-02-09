@@ -11,6 +11,7 @@ import { useGetAllSemestersQuery } from "../../../redux/features/admin/academicM
 import PhDatePicker from "../../../components/form/PhDatePicker";
 import PhInput from "../../../components/form/PhInput";
 import {
+  useCreateCourseMutation,
   useCreateRegisterSemesterMutation,
   useGetAllCoursesQuery,
 } from "../../../redux/features/admin/courseManagement.api";
@@ -18,6 +19,7 @@ import { TApiResponse } from "../../../types";
 
 const CreateCourse = () => {
   const { data: courses } = useGetAllCoursesQuery(undefined);
+  const [createCourse] = useCreateCourseMutation();
   // console.log(courses);
   const preRequisiteCourseOptions = courses?.data?.map((item) => ({
     label: item.title,
@@ -36,18 +38,16 @@ const CreateCourse = () => {
       })),
     };
     console.log(courseData);
-    // try {
-    //   const res = (await createRegisterSemester(
-    //     semesterData
-    //   )) as TApiResponse<any>;
-    //   if (res.error) {
-    //     toast.error(res.error.data.message, { id: toastId });
-    //   } else {
-    //     toast.success("Semester registered successfully", { id: toastId });
-    //   }
-    // } catch (error) {
-    //   toast.error("Something went wrong", { id: toastId });
-    // }
+    try {
+      const res = (await createCourse(courseData)) as TApiResponse<any>;
+      if (res.error) {
+        toast.error(res.error.data.message, { id: toastId });
+      } else {
+        toast.success("Course created successfully", { id: toastId });
+      }
+    } catch (error) {
+      toast.error("Something went wrong", { id: toastId });
+    }
   };
 
   return (

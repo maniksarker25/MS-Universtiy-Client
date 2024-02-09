@@ -37,6 +37,16 @@ const courseManagementApi = baseApi.injectEndpoints({
       },
       invalidatesTags: ["registeredSemester"],
     }),
+    createCourse: builder.mutation({
+      query: (data) => {
+        return {
+          url: "/courses/create-course",
+          method: "POST",
+          body: data,
+        };
+      },
+      invalidatesTags: ["course"],
+    }),
     getAllCourses: builder.query({
       query: () => {
         return {
@@ -50,6 +60,7 @@ const courseManagementApi = baseApi.injectEndpoints({
           meta: response.meta,
         };
       },
+      providesTags: ["course"],
     }),
     // createAcademicDepartment: builder.mutation({
     //   query: (data) => {
@@ -82,4 +93,5 @@ export const {
   useGetAllRegisteredSemesterQuery,
   useUpdateRegisteredSemesterMutation,
   useGetAllCoursesQuery,
+  useCreateCourseMutation,
 } = courseManagementApi;
