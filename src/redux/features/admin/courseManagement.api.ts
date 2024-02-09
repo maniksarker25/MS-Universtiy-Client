@@ -37,6 +37,20 @@ const courseManagementApi = baseApi.injectEndpoints({
       },
       invalidatesTags: ["registeredSemester"],
     }),
+    getAllCourses: builder.query({
+      query: () => {
+        return {
+          url: "/courses",
+          method: "GET",
+        };
+      },
+      transformResponse: (response: TReduxResponse<any>) => {
+        return {
+          data: response.data,
+          meta: response.meta,
+        };
+      },
+    }),
     // createAcademicDepartment: builder.mutation({
     //   query: (data) => {
     //     return {
@@ -67,4 +81,5 @@ export const {
   useCreateRegisterSemesterMutation,
   useGetAllRegisteredSemesterQuery,
   useUpdateRegisteredSemesterMutation,
+  useGetAllCoursesQuery,
 } = courseManagementApi;

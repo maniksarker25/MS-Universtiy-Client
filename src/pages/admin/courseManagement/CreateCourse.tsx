@@ -10,10 +10,19 @@ import { toast } from "sonner";
 import { useGetAllSemestersQuery } from "../../../redux/features/admin/academicManagement.api";
 import PhDatePicker from "../../../components/form/PhDatePicker";
 import PhInput from "../../../components/form/PhInput";
-import { useCreateRegisterSemesterMutation } from "../../../redux/features/admin/courseManagement.api";
+import {
+  useCreateRegisterSemesterMutation,
+  useGetAllCoursesQuery,
+} from "../../../redux/features/admin/courseManagement.api";
 import { TApiResponse } from "../../../types";
 
 const CreateCourse = () => {
+  const { data: courses } = useGetAllCoursesQuery(undefined);
+  // console.log(courses);
+  const preRequisiteCourseOptions = courses?.data?.map((item) => ({
+    label: item.title,
+    value: item._id,
+  }));
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     const toastId = toast.loading("Creating...");
 
@@ -21,6 +30,10 @@ const CreateCourse = () => {
       ...data,
       code: Number(data.code),
       credits: Number(data.credits),
+      preRequisiteCourses: data.preRequisiteCourses.map((item: string) => ({
+        course: item,
+        isDeleted: false,
+      })),
     };
     console.log(courseData);
     // try {
@@ -46,10 +59,7 @@ const CreateCourse = () => {
           <PhInput name="code" label="Code" type="text" />
           <PhInput name="credits" label="Credits" type="text" />
           <PhSelect
-            options={[
-              { label: "test1", value: "test1" },
-              { label: "test2", value: "test2" },
-            ]}
+            options={preRequisiteCourseOptions}
             name="preRequisiteCourses"
             label="Pre Requisite Courses"
             mode="multiple"
