@@ -16,6 +16,7 @@ import { TApiResponse } from "../../../../types";
 import { TAdmin } from "../../../../types/userManagement.type";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { createAdminValidationSchema } from "../../../../schemas/userManagementSchema/AdminManagement.schema";
+import { useState } from "react";
 
 //! this is only for development
 //! should be removed in a future release
@@ -32,18 +33,20 @@ const adminDefaultValues = {
   contactNo: "9876543210",
   emergencyContactNo: "1234567890",
   bloodGroup: "AB+",
-  presentAddress: "789 Elm Street, City",
-  permanentAddress: "567 Oak Avenue, Town",
+  // presentAddress: "789 Elm Street, City",
+  // permanentAddress: "567 Oak Avenue, Town",
   profileImg: "https://example.com/emily_profile.jpg",
   isDeleted: false,
 };
 
 const CreateAdmin = () => {
+  const [success, setSuccess] = useState(false);
   const [createAdmin, { data, error }] = useCreateAdminMutation();
   console.log({ data, error });
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
-    console.log(data);
+    // console.log(data);
+    // data.dateOfBirth = data.dateOfBirth.toDate();
     const toastId = toast.loading("Creating...");
     const facultyData = {
       password: "faculty123",
@@ -56,6 +59,7 @@ const CreateAdmin = () => {
       const res = (await createAdmin(formData)) as TApiResponse<TAdmin>;
       if (res.error) {
         toast.error(res.error.data.message, { id: toastId });
+        setSuccess(true);
       } else {
         toast.success("Admin created successfully", { id: toastId });
       }
@@ -72,7 +76,7 @@ const CreateAdmin = () => {
         <PhForm
           onSubmit={onSubmit}
           defaultValues={adminDefaultValues}
-          resolver={zodResolver(createAdminValidationSchema)}
+          success={success}
         >
           <Divider>Personal Information</Divider>
           <Row gutter={8}>

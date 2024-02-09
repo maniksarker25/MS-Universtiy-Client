@@ -9,6 +9,7 @@ import {
 type TFormProps = {
   onSubmit: SubmitHandler<FieldValues>;
   children: ReactNode;
+  success?: boolean;
 } & TFormConfig;
 type TFormConfig = {
   defaultValues?: Record<string, any>;
@@ -19,6 +20,7 @@ const PhForm = ({
   children,
   defaultValues,
   resolver,
+  success,
 }: TFormProps) => {
   const formConfig: TFormConfig = {};
   if (defaultValues) {
@@ -32,7 +34,9 @@ const PhForm = ({
 
   const submit: SubmitHandler<FieldValues> = (data) => {
     onSubmit(data);
-    methods.reset();
+    if (success) {
+      methods.reset();
+    }
   };
 
   return (
