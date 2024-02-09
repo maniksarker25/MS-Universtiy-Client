@@ -17,7 +17,8 @@ export const createAdminValidationSchema = z.object({
   designation: z.string({ required_error: "Please enter designation" }),
   name: createUserNameValidationSchema,
   gender: z.enum([...gender] as [string, ...string[]]),
-  dateOfBirth: z.date({ required_error: "Date of Birth is required" }),
+  // dateOfBirth: z.date({ required_error: "Date of Birth is required" }),
+  dateOfBirth: z.coerce.date({ required_error: "Date of Birth is required" }),
   email: z.string().email(),
   contactNo: z.string({ required_error: "Contact No is required" }),
   emergencyContactNo: z.string({

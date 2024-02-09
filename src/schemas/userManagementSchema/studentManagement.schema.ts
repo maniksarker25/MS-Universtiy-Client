@@ -55,7 +55,7 @@ const localGuardianSchema = z.object({
 export const studentSchema = z.object({
   name: userNameSchema,
   gender: z.enum(["male", "female", "other"]),
-  // dateOfBirth: z.date(),
+  dateOfBirth: z.coerce.date({ required_error: "Date of Birth is required" }),
   email: z.string({ required_error: "Email is required" }).email(),
   contactNo: z.string({ required_error: "Contact no is required" }),
   emergencyContactNo: z.string({

@@ -46,7 +46,7 @@ const CreateAdmin = () => {
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     // console.log(data);
-    // data.dateOfBirth = data.dateOfBirth.toDate();
+    data.dateOfBirth = new Date(data.dateOfBirth);
     const toastId = toast.loading("Creating...");
     const facultyData = {
       password: "faculty123",
@@ -77,6 +77,7 @@ const CreateAdmin = () => {
           onSubmit={onSubmit}
           defaultValues={adminDefaultValues}
           success={success}
+          resolver={zodResolver(createAdminValidationSchema)}
         >
           <Divider>Personal Information</Divider>
           <Row gutter={8}>
