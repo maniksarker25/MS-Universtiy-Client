@@ -32,12 +32,14 @@ const CreateCourse = () => {
       ...data,
       code: Number(data.code),
       credits: Number(data.credits),
-      preRequisiteCourses: data.preRequisiteCourses.map((item: string) => ({
-        course: item,
-        isDeleted: false,
-      })),
+      preRequisiteCourses: data?.preRequisiteCourses
+        ? data?.preRequisiteCourses?.map((item: string) => ({
+            course: item,
+            isDeleted: false,
+          }))
+        : [],
     };
-    console.log(courseData);
+    // console.log(courseData);
     try {
       const res = (await createCourse(courseData)) as TApiResponse<any>;
       if (res.error) {
