@@ -47,7 +47,7 @@ const RegisteredSemester = () => {
     })
   );
 
-  const handleStatusChange = (data) => {
+  const handleStatusChange = (data: any) => {
     // console.log("new status", data?.key);
     // console.log("semesterid", semesterId);
     const updatedData = {
