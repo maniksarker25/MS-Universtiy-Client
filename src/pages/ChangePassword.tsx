@@ -7,7 +7,7 @@ import { TApiResponse } from "../types";
 import { toast } from "sonner";
 import { useDispatch } from "react-redux";
 import { logout } from "../redux/features/auth/authSlice";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const ChangePassword = () => {
   const navigate = useNavigate();
