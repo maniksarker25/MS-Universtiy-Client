@@ -30,11 +30,17 @@ const Login = () => {
         password: data.password,
       };
       const res = await login(userInfo).unwrap();
+      // console.log(res);
       const user = verifyToken(res.data.accessToken) as TUser;
       // console.log(user);
       dispatch(setUser({ user, token: res.data.accessToken }));
       toast.success("Login successful", { id: toastId, duration: 2000 });
-      navigate(`/${user?.role}/dashboard`);
+      //check the password change is need
+      if (res?.data?.needsPasswordChange) {
+        navigate("/change-password");
+      } else {
+        navigate(`/${user?.role}/dashboard`);
+      }
     } catch (error) {
       toast.error("Something went wrong", { id: toastId, duration: 2000 });
     }
@@ -44,7 +50,7 @@ const Login = () => {
       <PhForm onSubmit={onSubmit} defaultValues={defaultValues}>
         <PhInput type={"text"} name={"id"} label={"Your id"} />
 
-        <PhInput type={"password"} name={"password"} label="Password" />
+        <PhInput type={"text"} name={"password"} label="Password" />
 
         <Button htmlType="submit">Login</Button>
       </PhForm>
