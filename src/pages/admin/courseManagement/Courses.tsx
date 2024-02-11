@@ -11,6 +11,7 @@ import PhSelect from "../../../components/form/PhSelect";
 import { useGetAllFacultyQuery } from "../../../redux/features/admin/userManagement.api";
 import { TApiResponse } from "../../../types";
 import { toast } from "sonner";
+import { FieldValues, SubmitHandler } from "react-hook-form";
 
 // import { TQueryParams } from "../../../types";
 // import { useState } from "react";
@@ -99,7 +100,7 @@ const AssignFacultyModal = ({ facultyInfo }) => {
     setIsModalOpen(false);
   };
   //
-  const handleSubmit = async (data) => {
+  const handleSubmit: SubmitHandler<FieldValues> = async (data) => {
     const toastId = toast.loading("Assigning...");
     const facultyData = {
       courseId: facultyInfo.key,

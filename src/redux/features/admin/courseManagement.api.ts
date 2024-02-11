@@ -75,15 +75,30 @@ const courseManagementApi = baseApi.injectEndpoints({
       },
       invalidatesTags: ["course"],
     }),
-    // createAcademicDepartment: builder.mutation({
-    //   query: (data) => {
-    //     return {
-    //       url: "/academic-departments/create-academic-department",
-    //       method: "POST",
-    //       body: data,
-    //     };
-    //   },
-    // }),
+    getCourseFaculties: builder.query({
+      query: (courseId) => {
+        return {
+          url: `/courses/${courseId}/get-faculties`,
+          method: "GET",
+        };
+      },
+      // transformResponse: (response: TReduxResponse<TCourse[]>) => {
+      //   return {
+      //     data: response.data,
+      //     meta: response.meta,
+      //   };
+      // },
+      providesTags: ["course"],
+    }),
+    createOfferedCourse: builder.mutation({
+      query: (data) => {
+        return {
+          url: "/offered-courses",
+          method: "POST",
+          body: data,
+        };
+      },
+    }),
     // getAllAcademicDepartment: builder.query({
     //   query: () => {
     //     return {
@@ -108,4 +123,6 @@ export const {
   useGetAllCoursesQuery,
   useCreateCourseMutation,
   useAssignFacultyMutation,
+  useGetCourseFacultiesQuery,
+  useCreateOfferedCourseMutation,
 } = courseManagementApi;
