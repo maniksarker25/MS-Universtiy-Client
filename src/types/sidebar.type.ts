@@ -9,7 +9,7 @@ export type TSidebarItem =
   | undefined;
 
 export type TPath = {
-  name: string;
+  name?: string;
   path?: string;
   element?: ReactNode;
   children?: TPath[];
